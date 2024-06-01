@@ -1,54 +1,52 @@
 {
-    "name": "NextJS + Typescript (pnpm)",
-    "image": "mcr.microsoft.com/devcontainers/base:jammy",
-    "features": {
-      "ghcr.io/devcontainers/features/common-utils:2": {
-        "installZsh": true,
-        "installOhMyZsh": true,
-        "installOhMyZshConfig": true,
-        "upgradePackages": true,
-        "configureZshAsDefaultShell": true
+  "name": "NextJS + Typescript (pnpm)",
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "upgradePackages": true,
+      "configureZshAsDefaultShell": true
+    },
+    "ghcr.io/devcontainers-community/npm-features/typescript:1": {
+      "version": "latest"
+    }
+  },
+  "mounts": [
+    "source=${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "telemetry.enableTelemetry": false,
+        "redhat.telemetry.enabled": false,
+        "vulnCost.sendStatistics": false,
+        "files.autoSave": "afterDelay",
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true
       },
-      "ghcr.io/devcontainers-community/npm-features/typescript:1": {
-        "version": "latest"
-      }
-    },
-    "mounts": [
-      "source=${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-    ],
-    "customizations": {
-      "vscode": {
-        "settings": {
-          "telemetry.enableTelemetry": false,
-          "redhat.telemetry.enabled": false,
-          "vulnCost.sendStatistics": false,
-          "editor.autoSave": "afterDelay",
-          "editor.formatOnSave": true,
-          "files.insertFinalNewline": true
-        },
-        "extensions": [
-          "streetsidesoftware.code-spell-checker",
-          "editorconfig.editorconfig",
-          "ms-azuretools.vscode-docker",
-          "tyriar.sort-lines",
-          "m4ns0ur.base64",
-          "Codeium.codeium",
-          "eamodio.gitlens",
-          "yzhang.markdown-all-in-one",
-          "shd101wyy.markdown-preview-enhanced",
-          "DavidAnson.vscode-markdownlint",
-          "esbenp.prettier-vscode",
-          "dbaeumer.vscode-eslint",
-          "redhat.vscode-yaml",
-          "leodevbro.blockman",
-          "mikestead.dotenv",
-          "42Crunch.vscode-openapi",
-          "ms-vscode.makefile-tools"
-        ]
-      }
-    },
-    "postStartCommand": "pnpm install --frozen-lockfile",
-    "forwardPorts": [
-      3000
-    ]
-  }
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "editorconfig.editorconfig",
+        "ms-azuretools.vscode-docker",
+        "tyriar.sort-lines",
+        "m4ns0ur.base64",
+        "Codeium.codeium",
+        "eamodio.gitlens",
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced",
+        "DavidAnson.vscode-markdownlint",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "redhat.vscode-yaml",
+        "leodevbro.blockman",
+        "mikestead.dotenv",
+        "42Crunch.vscode-openapi",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  },
+  "postStartCommand": "pnpm install --frozen-lockfile",
+  "forwardPorts": [3000]
+}
