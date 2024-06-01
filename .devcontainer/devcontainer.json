@@ -13,6 +13,9 @@
         "version": "latest"
       }
     },
+    "mounts": [
+      "source=${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    ],
     "customizations": {
       "vscode": {
         "settings": {
@@ -49,4 +52,3 @@
       3000
     ]
   }
-  
