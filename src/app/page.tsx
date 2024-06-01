@@ -1,8 +1,7 @@
-import { Dashboard } from "@component/Dashboard";
-import { Admin } from "react-admin";
+import { NextPage } from "next";
+import dynamic from "next/dynamic";
+const AdminApp = dynamic(() => import("@component/AdminApp"), { ssr: false });
 
-export default function Home() {
-  return (
-    <Admin dashboard={Dashboard} />
-  );
-}
+const Home: NextPage = () => <AdminApp />;
+
+export default Home;
