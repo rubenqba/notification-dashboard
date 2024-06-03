@@ -24,7 +24,11 @@
         "vulnCost.sendStatistics": false,
         "files.autoSave": "afterDelay",
         "editor.formatOnSave": true,
-        "files.insertFinalNewline": true
+        "files.insertFinalNewline": true,
+        "couchdb-vs.protocol": "http",
+        "couchdb-vs.host": "host.docker.internal:5984",
+        "couchdb-vs.username": "admin",
+        "couchdb-vs.password": "password123"
       },
       "extensions": [
         "streetsidesoftware.code-spell-checker",
@@ -43,7 +47,8 @@
         "leodevbro.blockman",
         "mikestead.dotenv",
         "42Crunch.vscode-openapi",
-        "ms-vscode.makefile-tools"
+        "ms-vscode.makefile-tools",
+        "arbko.couchdb-vs"
       ]
     }
   },

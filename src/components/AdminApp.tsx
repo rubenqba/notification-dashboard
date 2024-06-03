@@ -5,20 +5,25 @@ import { Dashboard } from "./Dashboard";
 import MarkEmailUnreadIcon from "@mui/icons-material/MarkEmailUnread";
 import SmsIcon from "@mui/icons-material/Sms";
 import CloudIcon from "@mui/icons-material/Cloud";
+import dynamic from "next/dynamic";
+import { PouchDataProvider } from "@provider/pouchdb";
+import { RequestList } from "./RequestList";
 
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+// const PouchDataProvider = dynamic(() => import("@provider/pouchdb"), {
+//   ssr: false,
+// })
+const dataProvider = PouchDataProvider;
 
 const AdminApp = () => (
   <Admin dataProvider={dataProvider} dashboard={Dashboard}>
     <Resource
-      name="users"
-      list={ListGuesser}
-      edit={EditGuesser}
-      recordRepresentation="name"
-      options={{ label: "Email" }}
+      name="base"
+      list={RequestList}
+      recordRepresentation="id"
+      options={{ label: "Base" }}
       icon={MarkEmailUnreadIcon}
     />
-    <Resource
+    {/* <Resource
       name="posts"
       list={ListGuesser}
       hasEdit={false}
@@ -33,7 +38,7 @@ const AdminApp = () => (
       edit={EditGuesser}
       options={{ label: "Push Notification" }}
       icon={CloudIcon}
-    />
+    /> */}
   </Admin>
 );
 

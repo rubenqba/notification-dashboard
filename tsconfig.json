@@ -13,13 +13,18 @@
     "jsx": "preserve",
     "incremental": true,
     "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
+      "@config/*": ["./src/configs/*"],
+      "@model/*": ["./src/models/*"],
       "@component/*": ["./src/components/*"],
+      "@service/*": ["./src/services/*"],
+      "@provider/*": ["./src/providers/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

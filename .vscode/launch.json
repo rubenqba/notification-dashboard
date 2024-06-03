@@ -12,18 +12,17 @@
           "action": "debugWithChrome"
         }
       },
-      {
-        "name": "Next.js: debug server-side",
-        "type": "node-terminal",
-        "request": "launch",
-        "command": "pnpm dev"
-      },
-      {
-        "name": "Next.js: debug client-side",
-        "type": "chrome",
-        "request": "launch",
-        "url": "http://localhost:3000"
-      }
+      // {
+      //   "name": "Next.js: debug server-side",
+      //   "type": "node-terminal",
+      //   "request": "launch",
+      //   "command": "pnpm dev"
+      // },
+      // {
+      //   "name": "Next.js: debug client-side",
+      //   "type": "chrome",
+      //   "request": "launch",
+      //   "url": "http://localhost:3000"
+      // }
     ]
   }
-  
