@@ -27,6 +27,7 @@ import {
   UpdateResult,
 } from "react-admin";
 
+console.log("NEXT_PUBLIC_DB_URL=", process.env.NEXT_PUBLIC_DB_URL)
 const service = createService(env.DB_URL);
 
 export interface RequestRecord extends RaRecord<string> {}

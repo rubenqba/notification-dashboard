@@ -2,30 +2,40 @@ import env from "@config/env";
 import { logger } from "@config/logger";
 import { Pageable, QueryFilter } from "@model/pagination";
 import { Request, RequestsPage } from "@model/request";
-import PouchDB from "pouchdb-browser";
-import PouchDBFind from "pouchdb-find";
-
-PouchDB.plugin(PouchDBFind);
-console.log(`DB_URL: ${env.DB_URL}`);
+import nano, { MangoSelector } from "nano";
 
 export class RequestService {
-  constructor(private readonly db = new PouchDB<Request>(`${env.DB_URL}`)) {}
+  constructor(private readonly db: nano.DocumentScope<Request>) {}
+
+  private modelMapper = (
+    dbo: Request & { _id: string; _rev: string }
+  ): Request => {
+    const { _id, _rev, ...rest } = dbo;
+    return { id: _id, ...rest };
+  };
 
   public info = async () => {
     const info = await this.db.info();
     if (info) {
       return info;
     }
-    throw Error('No hay info')
+    throw Error("No hay info");
   };
 
   public getPage = (
     filter: QueryFilter,
     page: Pageable
   ): Promise<RequestsPage> => {
+    logger.info("Filter query", filter);
+    const q: MangoSelector = {};
+
+    Object.keys(filter).forEach((key) => {
+      q[key] = { $eq: filter[key] };
+    });
+
     return this.db
       .find({
-        selector: filter,
+        selector: q,
         // sort: [{ timestamp: "desc" }],
         skip: (page.page - 1) * page.size,
         limit: page.size,
@@ -34,23 +44,25 @@ export class RequestService {
         logger.info("getting response...");
         logger.info(`count: ${response.docs.length}`);
 
-        const list: Request[] = response.docs.map((doc) => ({
-          ...doc,
-        }));
         return {
-          content: list,
+          content: response.docs.map(this.modelMapper),
           pageable: page,
-          totalElements: list.length,
+          totalElements: response.docs.length,
           totalPages: 1,
         };
       });
   };
 
   public findOne = (id: string): Promise<Request> => {
-    return this.db.get(id)
-  }
+    return this.db
+      .get(id)
+      .then(this.modelMapper)
+      .catch((reason) => {
+        logger.error(`Object ${id} was not found`);
+        throw new Error("NotFound");
+      });
+  };
 }
 
-export const requestService = new RequestService();
-export const createService = (dbUrl: string) =>
-  new RequestService(new PouchDB(dbUrl));
+export const createService = (dbUrl: string, dbName: string) =>
+  new RequestService(nano(dbUrl).use(dbName));

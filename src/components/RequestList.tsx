@@ -1,30 +1,31 @@
 import {
+  Button,
   Datagrid,
   DateField,
   FunctionField,
+  Link,
   List,
+  Pagination,
+  ShowButton,
   TextField,
   UrlField,
+  useRecordContext,
 } from "react-admin";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+
+const RequestPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+);
 
 export const RequestList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <UrlField source="uri" />
+  <List pagination={<RequestPagination />}>
+    <Datagrid rowClick="show">
+      <TextField label='ID' source="id" />
+      <UrlField label="Path" source="uri" />
       <DateField source="timestamp" />
-      <TextField source="key" />
-      {/* <TextField source="service" /> */}
+      <TextField label='Endpoint key' source="key" />
       <TextField source="method" />
-      <TextField source="headers" />
-      <FunctionField
-        source="body"
-        render={(record: Request) => (
-          <pre>{JSON.stringify(record.body, null, 2)}</pre>
-        )}
-      />
-      <TextField source="form" />
-      <TextField source="query" />
+      <ShowButton />
     </Datagrid>
   </List>
 );

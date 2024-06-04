@@ -8,17 +8,19 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import dynamic from "next/dynamic";
 import { PouchDataProvider } from "@provider/pouchdb";
 import { RequestList } from "./RequestList";
+import { RequestShow } from "./RequestShow";
 
 // const PouchDataProvider = dynamic(() => import("@provider/pouchdb"), {
 //   ssr: false,
 // })
-const dataProvider = PouchDataProvider;
+const dataProvider = jsonServerProvider("/api/requests");
 
 const AdminApp = () => (
   <Admin dataProvider={dataProvider} dashboard={Dashboard}>
     <Resource
       name="base"
       list={RequestList}
+      show={RequestShow}
       recordRepresentation="id"
       options={{ label: "Base" }}
       icon={MarkEmailUnreadIcon}

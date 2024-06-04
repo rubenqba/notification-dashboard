@@ -2,7 +2,7 @@ import { Page } from "@model/pagination"
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTION'
 export type Request = {
-  _id: string,
+  id: string,
   service: string,
   key: string,
   uri: string,
