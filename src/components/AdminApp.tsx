@@ -1,3 +1,4 @@
+"use client";
 import { Admin, Resource } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 import { Dashboard } from "@component/Dashboard";
@@ -27,3 +28,4 @@ const AdminApp = ({ partitions }: Props) => {
 };
 
 export default AdminApp;
+// 
