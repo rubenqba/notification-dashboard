@@ -6,22 +6,22 @@ export type SortBy = {
 };
 
 export type Pageable = {
-  page: number;
-  size: number;
+  offset: number;
+  limit: number;
   sort: SortBy[];
 };
 
 export const DEFAULT_PAGEABLE: Pageable = {
-  page: 1,
-  size: 10,
+  offset: 0,
+  limit: 10,
   sort: [],
 };
 
-export type Page<T> = {
-  content: T[];
-  pageable: Pageable;
-  totalElements: number;
-  totalPages: number;
-};
+// export type Page<T> = {
+//   content: T[];
+//   pageable: Pageable;
+//   totalElements: number;
+//   totalPages: number;
+// };
 
 export type QueryFilter = Record<string, unknown>;

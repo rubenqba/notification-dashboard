@@ -5,5 +5,8 @@ export const dynamic = "force-dynamic"; // defaults to auto
 
 const service = createService(env.DB_URL, env.DB_NAME);
 export async function GET(request: Request) {
-  return Response.json(await service.info());
+  return Response.json({
+    info: await service.info(),
+    partitions: await service.partitions(),
+  });
 }

@@ -1,17 +1,49 @@
-import env from "@config/env";
 import { logger } from "@config/logger";
-import { Pageable, QueryFilter } from "@model/pagination";
-import { Request, RequestsPage } from "@model/request";
-import nano, { MangoSelector } from "nano";
+import { Partition } from "@model/info";
+import { DEFAULT_PAGEABLE, Pageable, QueryFilter } from "@model/pagination";
+import { Request } from "@model/request";
+import nano, { MangoSelector, RequestError, Document } from "nano";
 
 export class RequestService {
-  constructor(private readonly db: nano.DocumentScope<Request>) {}
+  private readonly VIEW_NAME = "dashboard_design";
+  constructor(private readonly db: nano.DocumentScope<Request>) {
+    this.createIndexAndViews();
+  }
 
-  private modelMapper = (
-    dbo: Request & { _id: string; _rev: string }
-  ): Request => {
+  private modelMapper = (dbo: Request & Document): Request => {
     const { _id, _rev, ...rest } = dbo;
-    return { id: _id, ...rest };
+    return { ...rest, id: _id };
+  };
+
+  private createIndexAndViews = async () => {
+    // Documento de Diseño
+    const globalDesign = {
+      _id: `_design/${this.VIEW_NAME}`,
+      options: {
+        partitioned: false,
+      },
+      views: {
+        partition_counts: {
+          map: "function (doc) { emit(doc.service, 1); }",
+          reduce: "_count",
+        },
+      },
+    };
+
+    await this.db
+      .get(globalDesign._id)
+      .then((view) => logger.warn("Design view was already created"))
+      .catch((error: RequestError) => {
+        if (error.statusCode !== 404) {
+          throw error;
+        } else {
+          return this.db
+            .insert(globalDesign)
+            .then((view) =>
+              logger.debug("Design document created/updated successfully.")
+            );
+        }
+      });
   };
 
   public info = async () => {
@@ -22,11 +54,33 @@ export class RequestService {
     throw Error("No hay info");
   };
 
-  public getPage = (
-    filter: QueryFilter,
-    page: Pageable
-  ): Promise<RequestsPage> => {
-    logger.info("Filter query", filter);
+  public partitions = (): Promise<Partition[]> => {
+    return this.db
+      .view<number>(this.VIEW_NAME, "partition_counts", { group: true })
+      .then((result) =>
+        result.rows.map((r) => ({ name: r.key, count: r.value }))
+      );
+  };
+
+  public countByPartition = (
+    partition: string,
+    selector: MangoSelector = {}
+  ) => {
+    return this.db
+      .partitionedFind(partition, {
+        selector,
+        fields: ["_id"],
+      })
+      .then((response) => response.docs.length)
+      .catch((_) => 0);
+  };
+
+  public getPage = async (
+    partition: string,
+    filter: QueryFilter = {},
+    page: Pageable = DEFAULT_PAGEABLE
+  ): Promise<Request[]> => {
+    logger.debug("Filter query", filter);
     const q: MangoSelector = {};
 
     Object.keys(filter).forEach((key) => {
@@ -34,23 +88,16 @@ export class RequestService {
     });
 
     return this.db
-      .find({
+      .partitionedFind(partition, {
         selector: q,
-        // sort: [{ timestamp: "desc" }],
-        skip: (page.page - 1) * page.size,
-        limit: page.size,
+        sort: page.sort.map((order) => ({
+          [order.property]: order.direction,
+        })),
+        skip: page.offset,
+        limit: page.limit,
+        execution_stats: true,
       })
-      .then((response) => {
-        logger.info("getting response...");
-        logger.info(`count: ${response.docs.length}`);
-
-        return {
-          content: response.docs.map(this.modelMapper),
-          pageable: page,
-          totalElements: response.docs.length,
-          totalPages: 1,
-        };
-      });
+      .then((result) => result.docs.map(this.modelMapper));
   };
 
   public findOne = (id: string): Promise<Request> => {

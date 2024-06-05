@@ -20,6 +20,7 @@
       }
     ],
     "paths": {
+      "@lib/*": ["./src/libs/*"],
       "@config/*": ["./src/configs/*"],
       "@model/*": ["./src/models/*"],
       "@component/*": ["./src/components/*"],
