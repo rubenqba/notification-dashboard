@@ -48,6 +48,7 @@
         "mikestead.dotenv",
         "42Crunch.vscode-openapi",
         "ms-vscode.makefile-tools",
+        "dsznajder.es7-react-js-snippets",
         "arbko.couchdb-vs"
       ]
     }

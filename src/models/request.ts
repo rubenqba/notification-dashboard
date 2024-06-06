@@ -1,12 +1,6 @@
 // import { Page } from "@model/pagination";
 
-export type RequestMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "DELETE"
-  | "PATCH"
-  | "OPTION";
+export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTION";
 export type Request = {
   id: string;
   service: string;
@@ -20,4 +14,9 @@ export type Request = {
   timestamp: Date;
 };
 
-// export type RequestsPage = Page<Request>;
+export type RequestFilter = {
+  q: string;
+  method: RequestMethod;
+  ts_gte: string;
+  ts_lte: string;
+};

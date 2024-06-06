@@ -11,3 +11,6 @@ trim_trailing_whitespace = true
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = true
+
+[*.tsx,*.ts,*.js*.jsx]
+maz_line_length = 140

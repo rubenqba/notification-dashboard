@@ -1,28 +1,32 @@
 import {
-  Button,
-  Datagrid,
-  DateField,
   FunctionField,
-  Link,
   List,
-  Pagination,
   ShowButton,
   TextField,
   UrlField,
-  useRecordContext,
+  TopToolbar,
+  SelectColumnsButton,
+  DatagridConfigurable,
+  WrapperField,
 } from "react-admin";
 import moment from "moment";
 import { Request } from "@model/request";
+import { Stack } from "@mui/material";
+import { RequestFilterSidebar } from "./RequestFilterSidebar";
+import ClearFiltersButton from "./ClearFiltersButton";
 
-const RequestPagination = () => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />
+const ListToolbar = () => (
+  <TopToolbar>
+    <ClearFiltersButton />
+    <SelectColumnsButton />
+  </TopToolbar>
 );
 
 const showTime = (record: Request) => {
-  const ahora = moment();
+  const now = moment();
   const ts = moment(record.timestamp);
 
-  const diff = ahora.diff(ts, "minutes");
+  const diff = now.diff(ts, "minutes");
 
   // Si la diferencia es menor de 1 minuto, mostrar como fecha relativa
   const value = diff < 1 ? ts.fromNow() : ts.format("LLL");
@@ -30,15 +34,16 @@ const showTime = (record: Request) => {
 };
 
 export const RequestList = () => (
-  <List sort={{ field: "timestamp", order: "DESC" }}>
-    <Datagrid rowClick="show">
+  <List actions={<ListToolbar />} sort={{ field: "timestamp", order: "DESC" }} aside={<RequestFilterSidebar />}>
+    <DatagridConfigurable rowClick="show" bulkActionButtons={false}>
       <TextField label="ID" source="id" />
       <UrlField label="Path" source="uri" />
       <FunctionField label="TS" render={showTime} />
-      <DateField source="timestamp" showTime />
       <TextField label="Endpoint key" source="key" />
       <TextField source="method" />
-      <ShowButton />
-    </Datagrid>
+      <WrapperField label="Actions">
+        <ShowButton />
+      </WrapperField>
+    </DatagridConfigurable>
   </List>
 );

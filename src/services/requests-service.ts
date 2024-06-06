@@ -37,11 +37,7 @@ export class RequestService {
         if (error.statusCode !== 404) {
           throw error;
         } else {
-          return this.db
-            .insert(globalDesign)
-            .then((view) =>
-              logger.debug("Design document created/updated successfully.")
-            );
+          return this.db.insert(globalDesign).then((view) => logger.debug("Design document created/updated successfully."));
         }
       });
   };
@@ -57,39 +53,56 @@ export class RequestService {
   public partitions = (): Promise<Partition[]> => {
     return this.db
       .view<number>(this.VIEW_NAME, "partition_counts", { group: true })
-      .then((result) =>
-        result.rows.map((r) => ({ name: r.key, count: r.value }))
-      );
+      .then((result) => result.rows.map((r) => ({ name: r.key, count: r.value })));
   };
 
-  public countByPartition = (
-    partition: string,
-    selector: MangoSelector = {}
-  ) => {
+  private selector = (filter: QueryFilter): MangoSelector => {
+    const q: MangoSelector = {};
+    const timestampSelector: { [key: string]: any } = {};
+    const querySelector: { [key: string]: any } = {};
+
+    Object.keys(filter).forEach((key) => {
+      if (key === "ts_gte") {
+        timestampSelector.$gte = filter[key];
+      } else if (key === "ts_lte") {
+        timestampSelector.$lte = filter[key];
+      } else if (key === "q") {
+        q['$or'] = [
+          { key: {$regex: filter[key]}},
+          { uri: {$regex: filter[key]}},
+        ]
+      } else {
+        q[key] = { $eq: filter[key] };
+      }
+    });
+
+    if (Object.keys(timestampSelector).length > 0) {
+      q["timestamp"] = timestampSelector;
+    }
+
+    return q;
+  };
+
+  public countByPartition = (partition: string, filter: QueryFilter = {}) => {
     return this.db
       .partitionedFind(partition, {
-        selector,
+        selector: this.selector(filter),
         fields: ["_id"],
       })
       .then((response) => response.docs.length)
       .catch((_) => 0);
   };
 
-  public getPage = async (
-    partition: string,
-    filter: QueryFilter = {},
-    page: Pageable = DEFAULT_PAGEABLE
-  ): Promise<Request[]> => {
+  public getPage = async (partition: string, filter: QueryFilter = {}, page: Pageable = DEFAULT_PAGEABLE): Promise<Request[]> => {
     logger.debug("Filter query", filter);
-    const q: MangoSelector = {};
 
-    Object.keys(filter).forEach((key) => {
-      q[key] = { $eq: filter[key] };
-    });
+    const selector = this.selector(filter);
+
+    logger.debug("CouchDB selector: ", selector)
 
     return this.db
       .partitionedFind(partition, {
-        selector: q,
+        selector,
         sort: page.sort.map((order) => ({
           [order.property]: order.direction,
         })),
@@ -111,5 +124,4 @@ export class RequestService {
   };
 }
 
-export const createService = (dbUrl: string, dbName: string) =>
-  new RequestService(nano(dbUrl).use(dbName));
+export const createService = (dbUrl: string, dbName: string) => new RequestService(nano(dbUrl).use(dbName));

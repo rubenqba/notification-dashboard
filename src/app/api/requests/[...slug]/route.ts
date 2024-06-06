@@ -1,5 +1,6 @@
 import env from "@config/env";
 import { logger } from "@config/logger";
+import { parseFilters } from "@lib/filters";
 import { parsePaginationQueries } from "@lib/pagination";
 import { DEFAULT_PAGEABLE, Pageable } from "@model/pagination";
 import { createService } from "@service/requests-service";
@@ -19,14 +20,11 @@ export async function GET(request: NextRequest, context: { params: Params }) {
     return Response.json(await service.findOne(id));
   }
 
-  const pageable: Pageable = parsePaginationQueries(
-    request.nextUrl.searchParams
-  );
+  const params = request.nextUrl.searchParams;
+  const pagination: Pageable = parsePaginationQueries(params);
+  const filter = parseFilters(params);
 
-  const [total, results] = await Promise.all([
-    service.countByPartition(resource, {}),
-    service.getPage(resource, {}, pageable),
-  ]);
+  const [total, results] = await Promise.all([service.countByPartition(resource, filter), service.getPage(resource, filter, pagination)]);
 
   logger.debug(`Recovered ${results.length} elements of ${total}`);
   return Response.json(results, {
