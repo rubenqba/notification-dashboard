@@ -1,5 +1,5 @@
+import "server-only";
 import { logger } from "@config/logger";
-import { Partition } from "@model/info";
 import { DEFAULT_PAGEABLE, Pageable, QueryFilter } from "@model/pagination";
 import { Request } from "@model/request";
 import nano, { MangoSelector, RequestError, Document } from "nano";
@@ -16,7 +16,6 @@ export class RequestService {
   };
 
   private createIndexAndViews = async () => {
-    // Documento de Diseño
     const globalDesign = {
       _id: `_design/${this.VIEW_NAME}`,
       options: {
@@ -50,12 +49,6 @@ export class RequestService {
     throw Error("No hay info");
   };
 
-  public partitions = (): Promise<Partition[]> => {
-    return this.db
-      .view<number>(this.VIEW_NAME, "partition_counts", { group: true })
-      .then((result) => result.rows.map((r) => ({ name: r.key, count: r.value })));
-  };
-
   private selector = (filter: QueryFilter): MangoSelector => {
     const q: MangoSelector = {};
     const timestampSelector: { [key: string]: any } = {};
@@ -67,10 +60,7 @@ export class RequestService {
       } else if (key === "ts_lte") {
         timestampSelector.$lte = filter[key];
       } else if (key === "q") {
-        q['$or'] = [
-          { key: {$regex: filter[key]}},
-          { uri: {$regex: filter[key]}},
-        ]
+        q["$or"] = [{ key: { $regex: filter[key] } }, { uri: { $regex: filter[key] } }];
       } else {
         q[key] = { $eq: filter[key] };
       }
@@ -98,7 +88,7 @@ export class RequestService {
 
     const selector = this.selector(filter);
 
-    logger.debug("CouchDB selector: ", selector)
+    logger.debug("CouchDB selector: ", selector);
 
     return this.db
       .partitionedFind(partition, {

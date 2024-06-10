@@ -2,7 +2,7 @@ import env from "@config/env";
 import { logger } from "@config/logger";
 import { parseFilters } from "@lib/filters";
 import { parsePaginationQueries } from "@lib/pagination";
-import { DEFAULT_PAGEABLE, Pageable } from "@model/pagination";
+import { Pageable } from "@model/pagination";
 import { createService } from "@service/requests-service";
 import { NextRequest } from "next/server";
 

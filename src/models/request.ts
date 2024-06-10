@@ -1,6 +1,6 @@
-// import { Page } from "@model/pagination";
+import { RequestMethod } from "@model/common";
 
-export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTION";
+
 export type Request = {
   id: string;
   service: string;

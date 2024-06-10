@@ -17,11 +17,4 @@ export const DEFAULT_PAGEABLE: Pageable = {
   sort: [],
 };
 
-// export type Page<T> = {
-//   content: T[];
-//   pageable: Pageable;
-//   totalElements: number;
-//   totalPages: number;
-// };
-
 export type QueryFilter = Record<string, unknown>;

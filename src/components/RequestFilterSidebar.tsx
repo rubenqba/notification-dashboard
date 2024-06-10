@@ -2,8 +2,7 @@ import { AccessTime, SwapHoriz } from "@mui/icons-material";
 import { Card, CardContent } from "@mui/material";
 import { startOfToday, subHours, subMinutes } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { Button, FilterList, FilterListItem, FilterLiveSearch, SavedQueriesList, Toolbar, useListContext } from "react-admin";
-import ClearFiltersButton from "./ClearFiltersButton";
+import { FilterList, FilterListItem, FilterLiveSearch, SavedQueriesList } from "react-admin";
 
 const DateFilter = () => {
   const [filters, setFilters] = useState({
