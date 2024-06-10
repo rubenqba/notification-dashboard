@@ -13,6 +13,9 @@
       "version": "latest"
     }
   },
+  "containerEnv": {
+    "NODE_EXTRA_CA_CERTS": "${localEnv:HOME}${localEnv:USERPROFILE}/.cemex_ca_certificates"
+  },
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
   ],
