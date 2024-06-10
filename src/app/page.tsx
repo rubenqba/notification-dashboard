@@ -1,12 +1,12 @@
-// import AdminApp from "@component/AdminApp";
-import { getResources } from "@lib/resources";
-import { Partition } from "@model/info";
+import { getResourceServices } from "@lib/resources";
+import { ResourceService } from "@model/info";
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
+
 const AdminApp = dynamic(() => import("@component/AdminApp"), { ssr: false });
 
 const Home: NextPage = async () => {
-  const resources: Partition[] = await getResources();
+  const resources: ResourceService[] = await getResourceServices();
   return <AdminApp partitions={resources} />;
 };
 

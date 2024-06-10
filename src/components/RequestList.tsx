@@ -11,9 +11,8 @@ import {
 } from "react-admin";
 import moment from "moment";
 import { Request } from "@model/request";
-import { Stack } from "@mui/material";
-import { RequestFilterSidebar } from "./RequestFilterSidebar";
-import ClearFiltersButton from "./ClearFiltersButton";
+import { RequestFilterSidebar } from "@component/RequestFilterSidebar";
+import ClearFiltersButton from "@component/ClearFiltersButton";
 
 const ListToolbar = () => (
   <TopToolbar>
@@ -38,7 +37,7 @@ export const RequestList = () => (
     <DatagridConfigurable rowClick="show" bulkActionButtons={false}>
       <TextField label="ID" source="id" />
       <UrlField label="Path" source="uri" />
-      <FunctionField label="TS" render={showTime} />
+      <FunctionField label="Timestamp" render={showTime} />
       <TextField label="Endpoint key" source="key" />
       <TextField source="method" />
       <WrapperField label="Actions">

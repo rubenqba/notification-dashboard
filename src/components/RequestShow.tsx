@@ -11,7 +11,7 @@ import {
   TopToolbar,
   Button,
 } from "react-admin";
-import { ListAlt, FilterList, DataArray, TextFields, Description, FormatListBulleted, DataObject } from "@mui/icons-material";
+import { ListAlt, FilterList, TextFields, Description, FormatListBulleted } from "@mui/icons-material";
 import TextCode from "@component/TextCode";
 
 const ShowActions = () => {

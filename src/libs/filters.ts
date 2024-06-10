@@ -1,7 +1,6 @@
 import { logger } from "@config/logger";
 import { QueryFilter } from "@model/pagination";
-import { Request, RequestFilter } from "@model/request";
-import { string } from "zod";
+import { RequestFilter } from "@model/request";
 
 const example: RequestFilter = {
   q: "",
