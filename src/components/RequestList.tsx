@@ -39,7 +39,7 @@ const showTime = (record: Request) => {
 export const RequestList = () => (
   <List actions={<ListToolbar />} sort={{ field: "timestamp", order: "DESC" }} aside={<RequestFilterSidebar />}>
     <DatagridConfigurable rowClick="show" bulkActionButtons={false}>
-      <FunctionField label="ID" source="id" render={showID} />
+      <FunctionField label="ID" source="id" render={showID} sortable={false} />
       <UrlField label="Path" source="uri" sortable={false} />
       <FunctionField label="Timestamp" render={showTime} sortBy="timestamp" />
       <TextField label="Endpoint key" source="key" sortable={false}  />
