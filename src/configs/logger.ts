@@ -3,7 +3,7 @@
  *
  * Documentation: https://github.com/winstonjs/winston
  */
-import env from "@config/env";
+import {env} from "@config/env";
 import { Logger } from "tslog";
 
 const level = (() => {

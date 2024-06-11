@@ -3,6 +3,7 @@ import { logger } from "@config/logger";
 import { DEFAULT_PAGEABLE, Pageable, QueryFilter } from "@model/pagination";
 import { Request } from "@model/request";
 import nano, { MangoSelector, RequestError, Document } from "nano";
+import {env} from "@config/env";
 
 export class RequestService {
   private readonly VIEW_NAME = "dashboard_design";
@@ -114,4 +115,4 @@ export class RequestService {
   };
 }
 
-export const createService = (dbUrl: string, dbName: string) => new RequestService(nano(dbUrl).use(dbName));
+export const createService = async () => new RequestService(nano(env.DB_URL).use(env.DB_NAME));

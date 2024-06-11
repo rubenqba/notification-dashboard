@@ -1,4 +1,4 @@
-import env from "@config/env";
+import {env} from "@config/env";
 import { logger } from "@config/logger";
 import { parseFilters } from "@lib/filters";
 import { parsePaginationQueries } from "@lib/pagination";
@@ -12,10 +12,11 @@ type Params = {
   slug: string[];
 };
 
-const service = createService(env.DB_URL, env.DB_NAME);
 export async function GET(request: NextRequest, context: { params: Params }) {
   logger.info("Request params", context.params);
   const [resource, id] = context.params.slug;
+
+  const service = await createService();
   if (id) {
     return Response.json(await service.findOne(id));
   }

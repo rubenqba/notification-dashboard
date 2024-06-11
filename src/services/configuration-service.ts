@@ -1,5 +1,5 @@
 import "server-only";
-import env from "@config/env";
+import {env} from "@config/env";
 import { logger } from "@config/logger";
 import { Configuration, Service } from "@model/service";
 import nano from "nano";
@@ -23,4 +23,4 @@ export class ConfigurationService {
   };
 }
 
-export const configuration = new ConfigurationService(nano(env.DB_URL).use(env.DB_NAME))
+export const createConfiguration = () => new ConfigurationService(nano(env.DB_URL).use(env.DB_NAME));

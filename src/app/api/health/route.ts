@@ -1,14 +1,10 @@
-import env from "@config/env";
-import { getResourceServices } from "@lib/resources";
-import { createService } from "@service/requests-service";
+import { getDBInfo, getResourceServices } from "@lib/resources";
 
 export const dynamic = "force-dynamic"; // defaults to auto
 
-const service = createService(env.DB_URL, env.DB_NAME);
-
-export async function GET(request: Request) {
+export async function GET() {
   return Response.json({
-    info: await service.info(),
+    info: await getDBInfo(),
     services: await getResourceServices(),
   });
 }

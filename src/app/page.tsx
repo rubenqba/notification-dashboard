@@ -1,13 +1,13 @@
 import { getResourceServices } from "@lib/resources";
 import { ResourceService } from "@model/info";
-import { NextPage } from "next";
 import dynamic from "next/dynamic";
+import { headers } from "next/headers";
 
 const AdminApp = dynamic(() => import("@component/AdminApp"), { ssr: false });
 
-const Home: NextPage = async () => {
+export default async function Home() {
+  headers();
   const resources: ResourceService[] = await getResourceServices();
   return <AdminApp partitions={resources} />;
 };
 
-export default Home;
