@@ -13,7 +13,7 @@ type Params = {
 };
 
 export async function GET(request: NextRequest, context: { params: Params }) {
-  logger.info("Request params", context.params);
+  logger.debug("Request params", context.params);
   const [resource, id] = context.params.slug;
 
   const service = await createService();

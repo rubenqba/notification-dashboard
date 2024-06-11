@@ -32,13 +32,14 @@ export class RequestService {
 
     await this.db
       .get(globalDesign._id)
-      .then((view) => logger.warn("Design view was already created"))
+      // .then((view) => {
+      //   logger.warn("Design view was already created")
+      // })
       .catch((error: RequestError) => {
         if (error.statusCode !== 404) {
           throw error;
-        } else {
-          return this.db.insert(globalDesign).then((view) => logger.debug("Design document created/updated successfully."));
         }
+        return this.db.insert(globalDesign).then(() => logger.debug("Design document created/updated successfully."));
       });
   };
 

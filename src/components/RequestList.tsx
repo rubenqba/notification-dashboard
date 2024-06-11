@@ -21,6 +21,10 @@ const ListToolbar = () => (
   </TopToolbar>
 );
 
+const showID = (record: Request) => {
+  return record.id.replaceAll(`${record.service}:`, "")
+}
+
 const showTime = (record: Request) => {
   const now = moment();
   const ts = moment(record.timestamp);
@@ -35,10 +39,10 @@ const showTime = (record: Request) => {
 export const RequestList = () => (
   <List actions={<ListToolbar />} sort={{ field: "timestamp", order: "DESC" }} aside={<RequestFilterSidebar />}>
     <DatagridConfigurable rowClick="show" bulkActionButtons={false}>
-      <TextField label="ID" source="id" sortable={false} />
+      <FunctionField label="ID" source="id" render={showID} />
       <UrlField label="Path" source="uri" sortable={false} />
-      <FunctionField label="Timestamp" render={showTime} />
-      <TextField label="Endpoint key" source="key" />
+      <FunctionField label="Timestamp" render={showTime} sortBy="timestamp" />
+      <TextField label="Endpoint key" source="key" sortable={false}  />
       <TextField source="method" sortable={false} />
       <WrapperField label="Actions">
         <ShowButton />
