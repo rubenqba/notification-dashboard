@@ -4,17 +4,7 @@ import moment from "moment";
 import { Box, Skeleton, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { RangeSelector, StatItem } from "@model/dashboard";
 import { getRequestCountStats } from "@lib/dashboard-client";
-import { useQuery } from "@tanstack/react-query";
-
-const generateRandom24Hours = () => {
-  const items: StatItem[] = [];
-
-  for (let i = 0; i < 24; i++) {
-    items.push({ ts: new Date(2024, 5, 11, i, 0, 0), value: Math.floor(Math.random() * (100 + 1)) });
-  }
-
-  return items;
-};
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function RequestChart() {
   const [range, setRange] = useState<RangeSelector>("daily");
@@ -22,7 +12,7 @@ export default function RequestChart() {
   const [dateFormat, setDateFormat] = useState("L");
 
   const { data, isLoading } = useQuery({ queryKey: ["stats_by", range], queryFn: () => getRequestCountStats(range) });
-
+  const queryClient = useQueryClient();
   const handleRangeChange = (value: RangeSelector) => {
     console.log("Selected button: ", value);
     setRange(value ?? "daily");
@@ -41,6 +31,15 @@ export default function RequestChart() {
         break;
     }
   };
+
+  useEffect(() => {
+    const n = setInterval(() => {
+      console.log("invalidate");
+      queryClient.invalidateQueries({ queryKey: ["stats_by"] });
+    }, 10000);
+    // Cleanup: se ejecuta cuando el componente se desmonta
+    return () => clearInterval(n);
+  }, []);
 
   return (
     <Stack sx={{ width: "100%" }}>
