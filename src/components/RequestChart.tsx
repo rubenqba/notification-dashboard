@@ -39,6 +39,7 @@ export default function RequestChart() {
     }, 10000);
     // Cleanup: se ejecuta cuando el componente se desmonta
     return () => clearInterval(n);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

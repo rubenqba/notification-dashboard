@@ -74,6 +74,8 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 ENV TZ "UTC"
+ENV RUNTIME "true"
+ENV LOG_LEVEL "info"
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
