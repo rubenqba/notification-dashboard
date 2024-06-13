@@ -1,4 +1,4 @@
-import { logger } from "@config/logger";
+
 import { RangeSelector, StatItem, Range } from "@model/dashboard";
 import { startOfMinute, sub, startOfHour, startOfDay } from "date-fns";
 
@@ -22,7 +22,7 @@ export const getRequestCountStats = async (view: RangeSelector): Promise<StatIte
       return await response.json();
     }
   } catch (err) {
-    logger.error("error requesting dashboard stats: ", err);
+    console.error("error requesting dashboard stats: ", err);
   }
   return [];
 };

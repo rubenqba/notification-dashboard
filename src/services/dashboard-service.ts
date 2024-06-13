@@ -82,10 +82,7 @@ export class DashboardService {
 
     fn({ start: period.start, end: period.end })
       .map((date) => date.getTime())
-      .forEach((date) => {
-        console.log("gen seq: ", formatISO(date));
-        sequence.push({ ts: date, value: 0 });
-      });
+      .forEach((date) => sequence.push({ ts: date, value: 0 }));
     return sequence;
   };
 
