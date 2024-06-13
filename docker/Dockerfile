@@ -44,8 +44,12 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
+# User setup
+ENV PUID 1001
+ENV PGID 1001
+
+RUN addgroup --system --gid ${PUID} nodejs
+RUN adduser --system --uid ${PGID} nodejs
 
 
 # Set the correct permission for prerender cache
@@ -56,7 +60,7 @@ RUN chown nodejs:nodejs .next
 ARG S6_OVERLAY_VERSION=3.2.0.0
 ARG S6_OVERLAY_ARCH=x86_64
 
-RUN apk add --no-cache --upgrade bash curl jq
+RUN apk add --no-cache --upgrade shadow bash curl jq
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz /tmp

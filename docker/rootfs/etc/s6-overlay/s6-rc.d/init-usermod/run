@@ -1,9 +1,9 @@
-#!/usr/bin/execlineb -P
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
-with-contenv
+PUID=${PUID:-1001}
+PGID=${PGID:-1001}
 
-UID=${UID:-1001}
-GID=${GID:-1001}
+echo "UID=${PUID}, GID=${PGID}"
 
-s6-echo "User Id $UID, Group id $GID"
-usermod -u "$UID" nodejs && groupmod -g "$GID" nodejs
+usermod -u "${PUID}" nodejs && groupmod -g "${PGID}" nodejs
