@@ -1,0 +1,6 @@
+#!/usr/bin/execlineb -P
+
+with-contenv
+s6-notifyoncheck -d -n 5 -s5000
+s6-setuidgid nodejs
+node /opt/notification-dashboard/server.js

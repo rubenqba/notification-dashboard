@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+UID=${UID:-1001}
+GID=${GID:-1001}
+
+echo "User Id $UID, Group id $GID"
+usermod -u "$UID" nodejs && groupmod -g "$GID" nodejs
