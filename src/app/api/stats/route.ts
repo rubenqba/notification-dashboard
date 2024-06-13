@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   const range: RangeSelector = params.has("view") ? (params.get("view") as RangeSelector) : "daily";
   logger.debug("view selection: ", range);
 
-  const svc = createDashboardService();
+  const svc = await createDashboardService();
 
   return NextResponse.json(await svc.getStats(range));
 }

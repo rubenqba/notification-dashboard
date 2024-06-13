@@ -23,4 +23,4 @@ export class ConfigurationService {
   };
 }
 
-export const createConfiguration = () => new ConfigurationService(nano(env.DB_URL).use(env.DB_NAME));
+export const createConfiguration = async () => new ConfigurationService(nano(env.DB_URL).use(env.DB_NAME));

@@ -14,6 +14,5 @@ export const env = createEnv({
     DB_NAME: process.env.DB_NAME,
     LOG_LEVEL: process.env.LOG_LEVEL,
   },
-  // skip validation at build time as secrets will not be available
-  skipValidation: true,
+  // emptyStringAsUndefined: true
 });

@@ -1,4 +1,3 @@
-import {env} from "@config/env";
 import { logger } from "@config/logger";
 import { parseFilters } from "@lib/filters";
 import { parsePaginationQueries } from "@lib/pagination";

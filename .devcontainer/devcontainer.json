@@ -29,6 +29,8 @@
         "files.autoSave": "afterDelay",
         "editor.formatOnSave": true,
         "files.insertFinalNewline": true,
+        "editor.defaultEOL": "lf",
+        "files.autoGuessEncoding": false,
         "couchdb-vs.protocol": "http",
         "couchdb-vs.host": "host.docker.internal:5984",
         "couchdb-vs.username": "admin",

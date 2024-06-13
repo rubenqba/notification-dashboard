@@ -5,7 +5,7 @@ import { logger } from "@config/logger";
 import { createService } from "@service/requests-service";
 
 export async function getResourceServices(): Promise<ResourceService[]> {
-  const configuration = createConfiguration();
+  const configuration = await createConfiguration();
   return await configuration
     .getServices()
     .then((services) => services.map((svc) => ({ id: svc.service, description: svc.description, endpoints: Object.keys(svc.endpoints).length })))

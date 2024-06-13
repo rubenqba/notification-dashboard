@@ -134,4 +134,4 @@ export class DashboardService {
   };
 }
 
-export const createDashboardService = () => new DashboardService(nano(env.DB_URL).use(env.DB_NAME));
+export const createDashboardService = async () => new DashboardService(nano(env.DB_URL).use(env.DB_NAME));
